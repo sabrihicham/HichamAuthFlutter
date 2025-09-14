@@ -126,6 +126,41 @@ class SocialAuthController extends GetxController {
     }
   }
 
+  // Apple login
+  Future<void> signInWithApple() async {
+    try {
+      isLoading.value = true;
+      final response = await SocialAuthService.signInWithApple();
+
+      if (response.success && response.data != null) {
+        currentUser.value = response.data!.user;
+        isAuthenticated.value = true;
+
+        Get.snackbar(
+          'نجح',
+          'تم تسجيل الدخول بنجاح',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+
+        // Navigate to home or dashboard
+        Get.offAllNamed('/home');
+      } else {
+        Get.snackbar(
+          'خطأ',
+          response.message,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'خطأ',
+        'فشل تسجيل الدخول بـ Apple',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   // Load user profile
   Future<void> loadUserProfile() async {
@@ -150,7 +185,6 @@ class SocialAuthController extends GetxController {
       );
       currentUser.value = null;
       isAuthenticated.value = false;
-
     } finally {
       isLoading.value = false;
     }
@@ -164,11 +198,11 @@ class SocialAuthController extends GetxController {
       final response = await _apiService.deleteAccount('');
 
       if (response.success) {
-             // تسجيل الخروج من الخادم
-      await _apiService.logout();
+        // تسجيل الخروج من الخادم
+        await _apiService.logout();
 
-      // تسجيل الخروج من جميع منصات التواصل الاجتماعي
-      await SocialAuthService.signOutAll();
+        // تسجيل الخروج من جميع منصات التواصل الاجتماعي
+        await SocialAuthService.signOutAll();
       } else {
         Get.snackbar(
           'خطأ',

@@ -183,3 +183,33 @@ class GoogleSocialLoginRequest {
     return {'access_token': accessToken, 'id_token': idToken};
   }
 }
+
+class AppleSocialLoginRequest {
+  final String idToken;
+  final String rawNonce;
+  final String? name;
+  final String? email;
+
+  AppleSocialLoginRequest({
+    required this.idToken,
+    required this.rawNonce,
+    this.name,
+    this.email,
+  });
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {
+      'id_token': idToken,
+      'raw_nonce': rawNonce,
+    };
+
+    if (name != null) {
+      data['name'] = name;
+    }
+    if (email != null) {
+      data['email'] = email;
+    }
+
+    return data;
+  }
+}

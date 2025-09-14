@@ -5,7 +5,7 @@ import '../views/register_page.dart';
 import '../views/home_page.dart';
 import '../views/profile_page.dart';
 
-class AppRoutes {
+class AppRoutes { 
   static const String splash = '/splash';
   static const String emailLogin = '/email-login';
   static const String register = '/register';

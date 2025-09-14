@@ -301,6 +301,52 @@ class ApiService {
     }
   }
 
+  // Social login - Apple
+  Future<ApiResponse<AuthResponse>> loginWithApple(
+    String idToken,
+    String rawNonce, {
+    String? name,
+    String? email,
+  }) async {
+    try {
+      print('Apple Login Request:');
+      print('ID Token: $idToken');
+      print('Raw Nonce: $rawNonce');
+      print('Name: $name');
+      print('Email: $email');
+
+      final request = AppleSocialLoginRequest(
+        idToken: idToken,
+        rawNonce: rawNonce,
+        name: name,
+        email: email,
+      );
+
+      final response = await _dio.post(
+        ApiConfig.socialApple,
+        data: request.toJson(),
+      );
+
+      final responseData = response.data;
+
+      // Convert social auth response structure to our expected format
+      final convertedData = _socialAuthResponse(responseData);
+
+      final apiResponse = ApiResponse<AuthResponse>.fromJson(
+        convertedData,
+        (json) => AuthResponse.fromJson(json),
+      );
+
+      if (apiResponse.success && apiResponse.data != null) {
+        await saveToken(apiResponse.data!.token);
+      }
+
+      return apiResponse;
+    } on DioException catch (e) {
+      return _handleDioError(e);
+    }
+  }
+
   // Generic social login method
   Future<ApiResponse<AuthResponse>> socialLogin({
     required String provider,

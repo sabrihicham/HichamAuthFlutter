@@ -251,13 +251,12 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                       onTap: socialController.signInWithGoogle,
                     ),
 
-                    // Apple (iOS only)
-                    if (Theme.of(context).platform == TargetPlatform.iOS)
-                      _buildSocialButton(
-                        icon: Icons.apple,
-                        color: Colors.black,
-                        onTap: () {}, // Implement Apple Sign-In
-                      ),
+                    // Apple
+                    _buildSocialButton(
+                      icon: Icons.apple,
+                      color: Colors.black,
+                      onTap: socialController.signInWithApple,
+                    ),
                   ],
                 );
               }),

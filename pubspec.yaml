@@ -29,6 +29,9 @@ dependencies:
   google_sign_in: ^6.1.5
   sign_in_with_apple: ^5.0.0
   
+  # Crypto
+  crypto: ^3.0.3
+  
   # UI Components
   flutter_svg: ^2.0.9
   
